@@ -35,7 +35,11 @@ export async function POST(req: Request) {
   try {
     const res = await fetch("https://api.web3forms.com/submit", {
       method: "POST",
-      headers: { "Content-Type": "application/json", Accept: "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "User-Agent": "Mozilla/5.0 (compatible; PortfolioContactForm/1.0)",
+      },
       body: JSON.stringify({
         access_key: key,
         name,

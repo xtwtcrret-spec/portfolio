@@ -8,8 +8,7 @@ import { TechLogo } from "@/components/ui/Logos";
 import { Reveal } from "@/components/ui/Reveal";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { useCountUp } from "@/components/ui/useCountUp";
-import { GitHubGraph } from "@/components/sections/GitHubGraph";
-import { SpotifyWidget } from "@/components/sections/SpotifyWidget";
+import { usePrefersReducedMotion } from "@/components/ui/usePrefersReducedMotion";
 import { projects, site, skills, stats } from "@/lib/data";
 
 function Stat({ value, suffix, label }: { value: number; suffix: string; label: string }) {
@@ -48,6 +47,7 @@ export function BentoGrid() {
   const featured = projects[0];
   const time = useLocalTime(site.timezone);
   const { t, lang } = useLang();
+  const reduced = usePrefersReducedMotion();
 
   return (
     <section id="about" className="relative mx-auto max-w-6xl px-6 py-24 sm:py-32" aria-label="About and highlights">
@@ -157,7 +157,22 @@ export function BentoGrid() {
                     aria-label={`${skill.name}: ${skill.blurb[lang]}`}
                   >
                     <div className="flex aspect-square items-center justify-center rounded-2xl bg-surface ring-1 ring-line transition-all duration-300 group-hover/skill:ring-accent group-focus-visible/skill:ring-accent">
-                      <TechLogo mark={skill.mark} className="size-8 p-1 opacity-80 transition-transform duration-300 group-hover/skill:scale-110 group-focus-visible/skill:scale-110 sm:size-9" />
+                      {reduced ? (
+                        <TechLogo mark={skill.mark} className="size-8 p-1 opacity-80 sm:size-9" />
+                      ) : (
+                        <motion.span
+                          className="block size-8 sm:size-9"
+                          animate={{ y: [0, -5, 0], rotate: [0, -4, 0, 4, 0] }}
+                          transition={{
+                            duration: 2.8 + i * 0.22,
+                            repeat: Infinity,
+                            ease: "easeInOut",
+                            delay: i * 0.16,
+                          }}
+                        >
+                          <TechLogo mark={skill.mark} className="size-full opacity-85" />
+                        </motion.span>
+                      )}
                     </div>
                     <span className="pointer-events-none absolute -top-9 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-lg bg-foreground px-2.5 py-1.5 font-mono text-[11px] text-background opacity-0 shadow-lg transition-all duration-200 group-hover/skill:-top-10 group-hover/skill:opacity-100 group-focus-visible/skill:opacity-100">
                       {skill.blurb[lang]}
@@ -195,14 +210,6 @@ export function BentoGrid() {
               </div>
             </div>
           </TiltCard>
-        </Reveal>
-
-        <Reveal className="sm:col-span-2 lg:col-span-4" delay={0.15}>
-          <GitHubGraph />
-        </Reveal>
-
-        <Reveal className="lg:col-span-2" delay={0.25}>
-          <SpotifyWidget />
         </Reveal>
       </div>
     </section>

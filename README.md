@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Raihan Farhani — Portfolio
 
-## Getting Started
+Personal portfolio website built with a modern & minimalist aesthetic: Bento Grid layout,
+micro-interactions, command palette, dark/light mode, and smooth animations.
 
-First, run the development server:
+**Live:** https://portfolio-livid-alpha-xovnavbmfh.vercel.app
+
+## Stack
+
+- [Next.js](https://nextjs.org) 16 (App Router, Turbopack)
+- [Tailwind CSS](https://tailwindcss.com) v4
+- [Framer Motion](https://motion.dev) — animations, tilt, magnetic buttons
+- [Lenis](https://lenis.darkroom.engineering) — smooth scrolling
+- [Lucide Icons](https://lucide.dev)
+- Deployed on [Vercel](https://vercel.com)
+
+## Features
+
+- Floating glassmorphism navbar with scroll-spy
+- Animated hero with mouse-reactive grid glow
+- Bento grid: featured project, animated counters, tech-stack tooltips, live Jakarta clock
+- Project showcase with category filter + detail modal
+- Expandable experience/education timeline
+- Testimonials section
+- Contact form (Web3Forms API route + honeypot spam trap)
+- `Ctrl/Cmd+K` command palette
+- EN / ID language toggle (persisted)
+- SEO: sitemap, robots, OpenGraph image, JSON-LD Person schema
+- Accessibility: keyboard nav, ARIA, `prefers-reduced-motion` support
+
+## Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Optional assets that enable features automatically when present in `public/`:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+| File | Unlocks |
+|------|---------|
+| `public/profile.jpg` | Profile photo in hero |
+| `public/cv.pdf` | Download CV buttons |
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Contact form requires a `WEB3FORMS_KEY` environment variable (free key at web3forms.com).
 
-## Learn More
+## Customization
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+All content lives in `src/lib/data.ts`; UI strings (EN/ID) in `src/lib/i18n.ts`.

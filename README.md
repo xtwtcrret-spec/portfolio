@@ -3,7 +3,7 @@
 Personal portfolio website built with a modern & minimalist aesthetic: Bento Grid layout,
 micro-interactions, command palette, dark/light mode, and smooth animations.
 
-**Live:** https://portfolio-livid-alpha-xovnavbmfh.vercel.app
+**Live:** https://raihan-farhani.vercel.app
 
 ## Stack
 

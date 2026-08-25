@@ -3,10 +3,12 @@
 import { AnimatePresence, motion } from "framer-motion";
 import {
   ArrowRight,
+  BookOpen,
   Briefcase,
   Copy,
   CornerDownLeft,
   ExternalLink,
+  FileText,
   FolderGit2,
   GraduationCap,
   Home,
@@ -17,6 +19,7 @@ import {
   UserRound,
 } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useLang } from "@/components/providers/LangProvider";
 import { useTheme } from "@/components/providers/ThemeProvider";
 import { useToast } from "@/components/providers/ToastProvider";
@@ -41,6 +44,7 @@ export function CommandPalette({
   const { toggle } = useTheme();
   const { lang, t, toggleLang } = useLang();
   const toast = useToast();
+  const router = useRouter();
   const [query, setQuery] = useState("");
   const [cursor, setCursor] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -122,6 +126,26 @@ export function CommandPalette({
           close();
         },
       },
+      {
+        id: "blog",
+        label: `${t.palette.open} Blog`,
+        hint: t.palette.links,
+        icon: <BookOpen className="size-4" aria-hidden />,
+        perform: () => {
+          router.push("/blog");
+          close();
+        },
+      },
+      {
+        id: "resume",
+        label: `${t.palette.goto} Resume`,
+        hint: t.palette.utility,
+        icon: <FileText className="size-4" aria-hidden />,
+        perform: () => {
+          router.push("/resume");
+          close();
+        },
+      },
       ...socials.map((social) => ({
         id: `social-${social.label}`,
         label: `${t.palette.open} ${social.label}`,
@@ -133,7 +157,7 @@ export function CommandPalette({
         },
       })),
     ],
-    [toggle, toast, close, t, lang, toggleLang]
+    [toggle, toast, close, t, lang, toggleLang, router]
   );
 
   const filtered = useMemo(() => {

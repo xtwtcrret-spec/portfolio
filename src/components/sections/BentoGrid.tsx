@@ -8,6 +8,8 @@ import { TechLogo } from "@/components/ui/Logos";
 import { Reveal } from "@/components/ui/Reveal";
 import { TiltCard } from "@/components/ui/TiltCard";
 import { useCountUp } from "@/components/ui/useCountUp";
+import { GitHubGraph } from "@/components/sections/GitHubGraph";
+import { SpotifyWidget } from "@/components/sections/SpotifyWidget";
 import { projects, site, skills, stats } from "@/lib/data";
 
 function Stat({ value, suffix, label }: { value: number; suffix: string; label: string }) {
@@ -45,7 +47,7 @@ function useLocalTime(timeZone: string) {
 export function BentoGrid() {
   const featured = projects[0];
   const time = useLocalTime(site.timezone);
-  const { t } = useLang();
+  const { t, lang } = useLang();
 
   return (
     <section id="about" className="relative mx-auto max-w-6xl px-6 py-24 sm:py-32" aria-label="About and highlights">
@@ -70,7 +72,7 @@ export function BentoGrid() {
                   <span className="text-subtle">{featured.year}</span>
                 </div>
                 <h3 className="mt-4 text-2xl font-bold tracking-tight sm:text-3xl">{featured.title}</h3>
-                <p className="mt-3 max-w-md leading-relaxed text-muted">{featured.summary}</p>
+                <p className="mt-3 max-w-md leading-relaxed text-muted">{featured.summary[lang]}</p>
                 <ul className="mt-5 flex flex-wrap gap-2" aria-label="Technologies used">
                   {featured.tech.slice(0, 4).map((tech) => (
                     <li key={tech} className="rounded-full bg-background/60 px-3 py-1 font-mono text-xs text-muted ring-1 ring-line">
@@ -93,7 +95,7 @@ export function BentoGrid() {
                 ) : (
                   <span />
                 )}
-                <span className="font-mono text-xs text-subtle">{featured.role}</span>
+                <span className="font-mono text-xs text-subtle">{featured.role[lang]}</span>
               </div>
             </article>
           </TiltCard>
@@ -125,7 +127,7 @@ export function BentoGrid() {
                 <Radio className="size-4 text-emerald-500" aria-hidden />
                 {t.bento.focus}
               </div>
-              <p className="mt-4 text-lg font-semibold leading-snug">{site.currentFocus}</p>
+              <p className="mt-4 text-lg font-semibold leading-snug">{site.currentFocus[lang]}</p>
               <p className="mt-2 inline-flex items-center gap-2 font-mono text-xs text-muted">
                 <span className="relative flex size-1.5">
                   <span className="absolute h-full w-full animate-ping-slow rounded-full bg-emerald-500" />
@@ -152,13 +154,13 @@ export function BentoGrid() {
                     transition={{ delay: i * 0.05, type: "spring", stiffness: 260, damping: 18 }}
                     className="group/skill relative"
                     tabIndex={0}
-                    aria-label={`${skill.name}: ${skill.blurb}`}
+                    aria-label={`${skill.name}: ${skill.blurb[lang]}`}
                   >
                     <div className="flex aspect-square items-center justify-center rounded-2xl bg-surface ring-1 ring-line transition-all duration-300 group-hover/skill:ring-accent group-focus-visible/skill:ring-accent">
                       <TechLogo mark={skill.mark} className="size-8 p-1 opacity-80 transition-transform duration-300 group-hover/skill:scale-110 group-focus-visible/skill:scale-110 sm:size-9" />
                     </div>
                     <span className="pointer-events-none absolute -top-9 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-lg bg-foreground px-2.5 py-1.5 font-mono text-[11px] text-background opacity-0 shadow-lg transition-all duration-200 group-hover/skill:-top-10 group-hover/skill:opacity-100 group-focus-visible/skill:opacity-100">
-                      {skill.blurb}
+                      {skill.blurb[lang]}
                     </span>
                   </motion.div>
                 ))}
@@ -193,6 +195,14 @@ export function BentoGrid() {
               </div>
             </div>
           </TiltCard>
+        </Reveal>
+
+        <Reveal className="sm:col-span-2 lg:col-span-4" delay={0.15}>
+          <GitHubGraph />
+        </Reveal>
+
+        <Reveal className="lg:col-span-2" delay={0.25}>
+          <SpotifyWidget />
         </Reveal>
       </div>
     </section>

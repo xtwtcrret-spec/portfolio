@@ -1,7 +1,8 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { ArrowUpRight, Check, Code2, X } from "lucide-react";
+import { ArrowUpRight, Check, Code2, ExternalLink, X } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useLang } from "@/components/providers/LangProvider";
 import { categories, projects, type Project } from "@/lib/data";
@@ -9,6 +10,7 @@ import { getLenis } from "@/lib/scroll";
 import { Reveal } from "@/components/ui/Reveal";
 
 function ProjectModal({ project, onClose }: { project: Project; onClose: () => void }) {
+  const { lang } = useLang();
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
@@ -60,7 +62,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
             {project.category} · {project.year}
           </p>
           <h3 className="mt-2 text-3xl font-bold tracking-tight">{project.title}</h3>
-          <p className="mt-4 leading-relaxed text-muted">{project.description}</p>
+          <p className="mt-4 leading-relaxed text-muted">{project.description[lang]}</p>
 
           <div className="mt-6 flex flex-wrap gap-2">
             {project.tech.map((tech) => (
@@ -88,9 +90,9 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
               <h4 className="mb-3 font-semibold uppercase tracking-wider text-subtle">Process</h4>
               <ol className="space-y-2">
                 {project.workflow.map((step, i) => (
-                  <li key={step} className="flex gap-3 text-muted">
+                  <li key={step.en} className="flex gap-3 text-muted">
                     <span className="pt-0.5 font-mono text-xs text-accent">{String(i + 1).padStart(2, "0")}</span>
-                    {step}
+                    {step[lang]}
                   </li>
                 ))}
               </ol>
@@ -98,10 +100,10 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
             <section>
               <h4 className="mb-3 font-semibold uppercase tracking-wider text-subtle">Challenges</h4>
               <ul className="space-y-2">
-                {project.challenges.map((c) => (
-                  <li key={c} className="flex gap-3 text-muted">
+                {project.challenges.map((challenge) => (
+                  <li key={challenge.en} className="flex gap-3 text-muted">
                     <span aria-hidden className="mt-[7px] size-1.5 shrink-0 rounded-full bg-accent" />
-                    {c}
+                    {challenge[lang]}
                   </li>
                 ))}
               </ul>
@@ -109,43 +111,49 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
             <section>
               <h4 className="mb-3 font-semibold uppercase tracking-wider text-subtle">Outcomes</h4>
               <ul className="space-y-2">
-                {project.outcomes.map((o) => (
-                  <li key={o} className="flex gap-3 text-muted">
+                {project.outcomes.map((outcome) => (
+                  <li key={outcome.en} className="flex gap-3 text-muted">
                     <Check className="mt-0.5 size-4 shrink-0 text-emerald-500" aria-hidden />
-                    {o}
+                    {outcome[lang]}
                   </li>
                 ))}
               </ul>
             </section>
-            <p className="text-xs text-subtle">Role: {project.role}</p>
+            <p className="text-xs text-subtle">Role: {project.role[lang]}</p>
           </div>
 
-          {(project.demoUrl || project.repoUrl) && (
-            <div className="mt-9 flex flex-wrap gap-3 border-t border-line pt-6">
-              {project.demoUrl && (
-                <a
-                  href={project.demoUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-accent-contrast transition-colors hover:bg-accent-strong"
-                >
-                  Visit live site
-                  <ArrowUpRight className="size-4" aria-hidden />
-                </a>
-              )}
-              {project.repoUrl && (
-                <a
-                  href={project.repoUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-2.5 text-sm font-semibold transition-colors hover:border-accent hover:text-accent"
-                >
-                  <Code2 className="size-4" aria-hidden />
-                  Source code
-                </a>
-              )}
-            </div>
-          )}
+          <div className="mt-9 flex flex-wrap gap-3 border-t border-line pt-6">
+            {project.demoUrl && (
+              <a
+                href={project.demoUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-accent-contrast transition-colors hover:bg-accent-strong"
+              >
+                Visit live site
+                <ArrowUpRight className="size-4" aria-hidden />
+              </a>
+            )}
+            {project.repoUrl && (
+              <a
+                href={project.repoUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-2.5 text-sm font-semibold transition-colors hover:border-accent hover:text-accent"
+              >
+                <Code2 className="size-4" aria-hidden />
+                Source code
+              </a>
+            )}
+            <Link
+              href={`/projects/${project.id}`}
+              onClick={() => onClose()}
+              className="inline-flex items-center gap-2 rounded-full border border-line-strong px-5 py-2.5 text-sm font-semibold transition-colors hover:border-accent hover:text-accent"
+            >
+              <ExternalLink className="size-4" aria-hidden />
+              Open full page
+            </Link>
+          </div>
         </div>
       </motion.div>
     </motion.div>
@@ -155,7 +163,7 @@ function ProjectModal({ project, onClose }: { project: Project; onClose: () => v
 export function Projects() {
   const [filter, setFilter] = useState<(typeof categories)[number]>("All");
   const [selected, setSelected] = useState<Project | null>(null);
-  const { t } = useLang();
+  const { t, lang } = useLang();
 
   const visible = projects.filter((p) => filter === "All" || p.category === filter);
 
@@ -224,7 +232,7 @@ export function Projects() {
                   aria-hidden
                 />
               </div>
-              <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted">{project.summary}</p>
+              <p className="mt-2 line-clamp-2 text-sm leading-relaxed text-muted">{project.summary[lang]}</p>
               <div className="mt-4 flex items-center justify-between">
                 <span className="rounded-full bg-accent-soft px-2.5 py-0.5 text-xs font-medium text-accent">
                   {project.category}

@@ -130,6 +130,14 @@ export function Contact({ hasCv = false }: { hasCv?: boolean }) {
               </a>
             )}
           </div>
+          <a
+            href="/raihan-farhani.vcf"
+            download
+            className="mt-4 inline-flex items-center gap-2 text-sm font-medium text-muted transition-colors hover:text-accent"
+          >
+            <Download className="size-4" aria-hidden />
+            {t.misc.vcard}
+          </a>
           <ul className="mt-6 flex flex-wrap items-center gap-3" aria-label="Social links">
             {socials.map((social) => (
               <li key={social.label}>

@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, motion, useScroll, useSpring } from "framer-motion";
 import { Command, Languages, Menu, Moon, Sun, X } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useLang } from "@/components/providers/LangProvider";
@@ -14,6 +14,8 @@ export function Navbar({ onOpenPalette }: { onOpenPalette: () => void }) {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const { scrollYProgress } = useScroll();
+  const progress = useSpring(scrollYProgress, { stiffness: 120, damping: 24 });
 
   const links = [
     { id: "home", label: t.nav.home },
@@ -58,6 +60,11 @@ export function Navbar({ onOpenPalette }: { onOpenPalette: () => void }) {
       transition={{ duration: 0.6, ease: [0.21, 0.6, 0.35, 1] }}
       className="fixed inset-x-0 top-4 z-[100] flex justify-center px-4"
     >
+      <motion.div
+        aria-hidden
+        className="fixed inset-x-0 top-0 h-[3px] origin-left bg-gradient-to-r from-accent to-accent-strong motion-reduce:hidden"
+        style={{ scaleX: progress }}
+      />
       <nav
         aria-label="Main navigation"
         className={`glass flex w-full max-w-2xl items-center justify-between gap-2 rounded-2xl border border-line py-2 pl-5 pr-2 shadow-lg shadow-black/5 transition-all duration-300 ${

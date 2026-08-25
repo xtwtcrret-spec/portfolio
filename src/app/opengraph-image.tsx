@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { ImageResponse } from "next/og";
 import { site } from "@/lib/data";
 
@@ -5,6 +7,14 @@ export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
 export default function OpengraphImage() {
+  let photoDataUri: string | null = null;
+  try {
+    const buf = fs.readFileSync(path.join(process.cwd(), "public", "profile.jpg"));
+    photoDataUri = `data:image/jpeg;base64,${buf.toString("base64")}`;
+  } catch {
+    photoDataUri = null;
+  }
+
   return new ImageResponse(
     (
       <div
@@ -20,17 +30,37 @@ export default function OpengraphImage() {
           fontFamily: "sans-serif",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
+          {photoDataUri && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              src={photoDataUri}
+              width="132"
+              height="132"
+              alt=""
+              style={{ borderRadius: "9999px", border: "4px solid #3B82F6" }}
+            />
+          )}
           <div
             style={{
-              width: "14px",
-              height: "14px",
-              borderRadius: "9999px",
-              background: "#22C55E",
               display: "flex",
+              alignItems: "center",
+              gap: "14px",
+              fontSize: "26px",
+              color: "#9CA3AF",
             }}
-          />
-          <div style={{ fontSize: "26px", color: "#9CA3AF" }}>{site.availability}</div>
+          >
+            <div
+              style={{
+                width: "14px",
+                height: "14px",
+                borderRadius: "9999px",
+                background: "#22C55E",
+                display: "flex",
+              }}
+            />
+            {site.availability}
+          </div>
         </div>
         <div
           style={{
@@ -54,10 +84,10 @@ export default function OpengraphImage() {
             color: "transparent",
           }}
         >
-          {site.role}
+          {site.role.en}
         </div>
         <div style={{ fontSize: "28px", color: "#6B7280", marginTop: "26px", display: "flex" }}>
-          {site.tagline}
+          {site.tagline.en}
         </div>
       </div>
     ),

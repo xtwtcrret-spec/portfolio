@@ -1,0 +1,46 @@
+---
+title: "How I built this portfolio with Next.js 16"
+description: "The stack, design decisions, and performance tricks behind the site you are looking at — Bento grid, command palette, EN/ID toggle and all."
+date: "2026-08-20"
+---
+
+> **Note:** this is a starter draft to show how posts look. Rewrite it with your own voice before sharing.
+
+This site is a single Next.js 16 app with no CMS and no database (except one optional
+counter). Everything you see is either static or generated at build time.
+
+## The stack
+
+- **Next.js 16 App Router** for static-first rendering. Every page prerenders to HTML;
+  the only dynamic routes are tiny API handlers.
+- **Tailwind CSS v4** with CSS custom properties as design tokens, so dark mode is a
+  single class flip with zero flash (a tiny inline script applies the stored theme
+  before first paint).
+- **Framer Motion** for the parts motion can improve: reveals, tilt cards, magnetic
+  buttons — all disabled automatically when your OS asks for reduced motion.
+- **Lenis** for smooth scrolling that still respects anchor jumps and modals.
+
+## Design decisions worth stealing
+
+**Bento grids beat long scroll pages.** A 6-column grid with mixed cell sizes lets you
+show a lot of information without walls of text. Each cell earns its place: featured
+project, live stats, tech stack, local time.
+
+**A command palette is a portfolio flex.** `Ctrl+K` opens navigation, theme switching,
+and contact shortcuts. It signals "I care about keyboard users" louder than any bullet
+point.
+
+**Real logos over text chips.** Inline SVG brand marks (from svgl.app) make a tech
+stack section feel curated instead of typed.
+
+## Performance tricks that mattered
+
+1. Lazy-loading the command palette kept ~15kb out of the initial bundle — it only
+   loads on first keystroke.
+2. Compressing the profile photo (128KB → 69KB) was free Lighthouse points; the image
+   renders at ~128px, so 640px source is already retina-safe.
+3. Security headers (`X-Frame-Options`, `nosniff`, referrer policy) cost nothing and
+   cover an entire Lighthouse category.
+
+The whole site ships less JavaScript than one medium-sized React component library —
+which is exactly the point.

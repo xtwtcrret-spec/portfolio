@@ -7,7 +7,7 @@ import { Reveal } from "@/components/ui/Reveal";
 import { TiltCard } from "@/components/ui/TiltCard";
 
 export function Testimonials() {
-  const { t } = useLang();
+  const { t, lang } = useLang();
 
   return (
     <section id="testimonials" className="mx-auto max-w-6xl px-6 py-24 sm:py-32" aria-label="Testimonials">
@@ -26,7 +26,7 @@ export function Testimonials() {
                 <div>
                   <Quote className="size-6 text-accent/60" aria-hidden />
                   <blockquote className="mt-4 text-pretty leading-relaxed text-muted">
-                    &ldquo;{item.quote}&rdquo;
+                    &ldquo;{item.quote[lang]}&rdquo;
                   </blockquote>
                 </div>
                 <figcaption className="flex items-center gap-3">
@@ -38,7 +38,7 @@ export function Testimonials() {
                   </span>
                   <span>
                     <span className="block text-sm font-semibold text-foreground">{item.name}</span>
-                    <span className="block text-xs text-subtle">{item.role}</span>
+                    <span className="block text-xs text-subtle">{item.role[lang]}</span>
                   </span>
                 </figcaption>
               </figure>

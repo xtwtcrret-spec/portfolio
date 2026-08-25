@@ -9,6 +9,7 @@ import { Reveal } from "@/components/ui/Reveal";
 
 function TimelineCard({ item, index }: { item: TimelineItem; index: number }) {
   const [open, setOpen] = useState(index === 0);
+  const { lang } = useLang();
   const WorkIcon = item.type === "work" ? Briefcase : GraduationCap;
 
   return (
@@ -32,9 +33,9 @@ function TimelineCard({ item, index }: { item: TimelineItem; index: number }) {
           >
             <div>
               <p className="font-mono text-xs uppercase tracking-widest text-subtle">{item.period}</p>
-              <h3 className="mt-1.5 text-lg font-semibold tracking-tight">{item.title}</h3>
-              <p className="mt-0.5 text-sm font-medium text-accent">{item.org}</p>
-              <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted">{item.summary}</p>
+              <h3 className="mt-1.5 text-lg font-semibold tracking-tight">{item.title[lang]}</h3>
+              <p className="mt-0.5 text-sm font-medium text-accent">{item.org[lang]}</p>
+              <p className="mt-2 max-w-xl text-sm leading-relaxed text-muted">{item.summary[lang]}</p>
             </div>
             <motion.span
               animate={{ rotate: open ? 180 : 0 }}
@@ -55,9 +56,9 @@ function TimelineCard({ item, index }: { item: TimelineItem; index: number }) {
                 <div className="border-t border-line px-5 pb-6 pt-5 sm:px-6">
                   <ul className="space-y-2.5">
                     {item.details.map((d) => (
-                      <li key={d} className="flex gap-3 text-sm leading-relaxed text-muted">
+                      <li key={d.en} className="flex gap-3 text-sm leading-relaxed text-muted">
                         <span aria-hidden className="mt-[7px] size-1.5 shrink-0 rounded-full bg-accent" />
-                        {d}
+                        {d[lang]}
                       </li>
                     ))}
                   </ul>

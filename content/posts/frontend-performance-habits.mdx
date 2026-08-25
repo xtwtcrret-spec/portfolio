@@ -1,0 +1,43 @@
+---
+title: "5 frontend performance habits that actually matter"
+description: "Skip the micro-optimizations. These five habits move Core Web Vitals more than everything else combined."
+date: "2026-08-22"
+---
+
+> **Note:** starter draft — rewrite in your own voice before sharing.
+
+After auditing too many slow sites, the same five problems show up every time.
+Fix these before touching anything exotic.
+
+## 1. Ship fewer kilobytes of JavaScript
+
+Not "code-split harder" — actually delete dependencies. Every library you remove beats
+any bundler magic. Audit with `npx next build` output sizes; anything over 100kb gzipped
+on the critical path needs a justification memo.
+
+## 2. Give every image explicit dimensions
+
+Layout shift (CLS) is mostly images without width/height. With `next/image`, set
+`width`/`height` or use `fill` inside a sized container. One afternoon of work,
+permanent CLS near zero.
+
+## 3. Fonts: self-host, subset, swap
+
+`next/font` does all three automatically: self-hosted woff2 subsets with
+`font-display: swap`. No render-blocking Google Fonts request, no invisible-text flash.
+
+## 4. Cache what never changes
+
+Hashed assets get `immutable, max-age=31536000`. HTML gets short cache + revalidate.
+Most "slow site" complaints are actually "every visit re-downloads the same files".
+
+## 5. Measure like a user, not like a lab
+
+Lighthouse lab scores are a smoke test. Real users on mid-range Androids over flaky
+4G are the truth. Chrome UX Report and Vercel Speed Insights show field data —
+optimize against that.
+
+---
+
+None of these require a rewrite. They are habits, applied per feature, that compound
+into a site that feels instant.

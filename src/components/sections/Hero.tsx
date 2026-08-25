@@ -17,7 +17,7 @@ interface HeroProps {
 
 export function Hero({ hasPhoto = false, hasCv = false }: HeroProps) {
   const reduced = usePrefersReducedMotion();
-  const { t } = useLang();
+  const { t, lang } = useLang();
   const sectionRef = useRef<HTMLElement>(null);
 
   const mx = useMotionValue(0.5);
@@ -115,7 +115,7 @@ export function Hero({ hasPhoto = false, hasCv = false }: HeroProps) {
           transition={{ duration: 0.6, delay: 0.7 }}
           className="mx-auto mt-6 max-w-xl text-pretty text-base text-muted sm:text-lg"
         >
-          {site.name} — {site.role}. {t.hero.tagline}
+          {site.name} — {site.role[lang]}. {t.hero.tagline}
         </motion.p>
 
         <motion.div

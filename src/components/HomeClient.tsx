@@ -1,7 +1,7 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useState } from "react";
-import { CommandPalette } from "@/components/CommandPalette";
 import { Footer } from "@/components/layout/Footer";
 import { Navbar } from "@/components/layout/Navbar";
 import { LangProvider } from "@/components/providers/LangProvider";
@@ -15,6 +15,11 @@ import { Hero } from "@/components/sections/Hero";
 import { Projects } from "@/components/sections/Projects";
 import { Testimonials } from "@/components/sections/Testimonials";
 import { Timeline } from "@/components/sections/Timeline";
+
+const CommandPalette = dynamic(
+  () => import("@/components/CommandPalette").then((m) => m.CommandPalette),
+  { ssr: false }
+);
 
 export function HomeClient({ hasPhoto, hasCv }: { hasPhoto: boolean; hasCv: boolean }) {
   const [paletteOpen, setPaletteOpen] = useState(false);

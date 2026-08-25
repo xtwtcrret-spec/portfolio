@@ -75,12 +75,23 @@ export function Contact({ hasCv = false }: { hasCv?: boolean }) {
 
     setState("loading");
     try {
-      const res = await fetch("/api/contact", {
+      const accessKey = process.env.NEXT_PUBLIC_WEB3FORMS_KEY;
+      if (!accessKey) throw new Error("not-configured");
+
+      const res = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, message, honeypot: String(data.get("honeypot") ?? "") }),
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: accessKey,
+          name,
+          email,
+          message,
+          subject: `Portfolio message from ${name}`,
+          from_name: "Portfolio Contact Form",
+        }),
       });
-      if (!res.ok) throw new Error("send failed");
+      const data = (await res.json()) as { success?: boolean };
+      if (!res.ok || !data.success) throw new Error("send failed");
       setState("success");
       toast(t.contact.toastSent);
       form.reset();

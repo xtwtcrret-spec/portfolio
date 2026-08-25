@@ -42,7 +42,8 @@ Optional assets that enable features automatically when present in `public/`:
 | `public/profile.jpg` | Profile photo in hero |
 | `public/cv.pdf` | Download CV buttons |
 
-Contact form requires a `WEB3FORMS_KEY` environment variable (free key at web3forms.com).
+Contact form uses [Web3Forms](https://web3forms.com) — set `NEXT_PUBLIC_WEB3FORMS_KEY`
+(free access key) as an environment variable in Vercel, then redeploy.
 
 ## Customization
 

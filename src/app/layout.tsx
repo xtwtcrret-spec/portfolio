@@ -20,7 +20,7 @@ const jetbrains = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://farhan.dev"), // TODO: replace with your real domain on deploy
+  metadataBase: new URL("https://raihanfarhani.vercel.app"),
   title: {
     default: `${site.name} — ${site.role}`,
     template: `%s · ${site.name}`,
